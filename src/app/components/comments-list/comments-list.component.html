@@ -1,0 +1,5 @@
+@for (comment of comments$ | async; track comment.id) {
+    <div class=""> {{ comment.id }}:{{ comment.content }} </div>
+} @empty {
+    <div>No comments</div>
+}
