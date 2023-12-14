@@ -4,6 +4,7 @@ $accent-blue-hover: hsl(239, 57%, 85%);
 $text-gray: hsl(223, 19%, 93%);
 $delete-red:  hsl(358, 79%, 66%);
 $delete-red-hover:  hsl(357, 100%, 86%);
+$dark-slate: hsl(212, 24%, 26%);
 
 //bg colors
 $bg-color-primary: hsl(228, 33%, 97%);
@@ -19,6 +20,6 @@ $breakpoint-tablet: 768px;
 
 @media (min-width: $breakpoint-tablet) {
     .app-main {
-        padding: 3rem;
+        padding: 5rem;
     }
 }
