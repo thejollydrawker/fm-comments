@@ -13,6 +13,8 @@ $btn-font-weight: 500;
     position: relative;
     background-color: white;
 
+    animation: slideUp 0.75s ease-in;
+
     &-content {
         font-size: 16px;
         color: gray;
@@ -109,5 +111,16 @@ $btn-font-weight: 500;
                 padding: 12px;
             }
         }
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
