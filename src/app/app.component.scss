@@ -1,0 +1,24 @@
+//colors
+$accent-blue: hsl(238, 40%, 52%);
+$accent-blue-hover: hsl(239, 57%, 85%);
+$text-gray: hsl(223, 19%, 93%);
+$delete-red:  hsl(358, 79%, 66%);
+$delete-red-hover:  hsl(357, 100%, 86%);
+
+//bg colors
+$bg-color-primary: hsl(228, 33%, 97%);
+$bg-cancel-btn: hsl(211, 10%, 45%);
+$bg-delete-btn: $delete-red;
+
+//breakpoints
+$breakpoint-tablet: 768px;
+
+.app-main {
+    padding: 0.5rem;
+}
+
+@media (min-width: $breakpoint-tablet) {
+    .app-main {
+        padding: 3rem;
+    }
+}

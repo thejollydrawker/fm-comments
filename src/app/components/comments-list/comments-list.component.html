@@ -1,5 +1,9 @@
-@for (comment of comments$ | async; track comment.id) {
-    <div class=""> {{ comment.id }}:{{ comment.content }} </div>
-} @empty {
-    <div>No comments</div>
-}
+
+
+<section class="comments-list">
+    @for (comment of comments$ | async; track comment.id) {
+    <app-comment [comment]="comment"></app-comment>
+    } @empty {
+        <div>No comments</div>
+    }
+</section>
