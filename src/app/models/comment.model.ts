@@ -8,3 +8,8 @@ export interface Comment {
     user: User,
     replies: Comment[]
 }
+
+export interface CommentResponse {
+    currentUser: User;
+    comments: Comment[];
+}

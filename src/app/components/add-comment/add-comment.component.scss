@@ -1,0 +1,63 @@
+@use 'src/app/app.component' as app;
+@use 'src/app/components/comment/comment.component' as c;
+
+$btn-font-weight: 500;
+
+.comment {
+    @include c.container;
+
+    &-header {
+        &_img {
+            width: 3rem;
+            height: 3rem;
+            order:2    
+        }
+    }
+
+    &-text {
+        border-radius: 5px;
+        border-color: app.$dark-slate;
+        color: gray;
+        font-size: 16px;
+    }
+}
+
+.send_btn {
+    background-color: app.$accent-blue;
+    height: fit-content;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 16px;
+    position: absolute;
+    bottom: 10%;
+    right:5%;
+
+    &:hover {
+        background-color: app.$accent-blue-hover;
+    }
+}
+
+@media (min-width: app.$breakpoint-tablet) {
+    .comment {
+        flex-direction: row;
+
+        &-text {
+            order:2;
+        }
+
+        &-header_img {
+            order:1;
+        }
+    }
+
+    .send_btn {
+        position: relative;
+        bottom: 0;
+        right: 0;
+        order: 3;
+    }
+}

@@ -1,1 +1,13 @@
-<p>add-comment works!</p>
+@if( user$ | async; as user ) {
+    <div class="comment">
+        <img 
+            [src]="'assets/images/' + user.image.png" 
+            [alt]="user.username"
+            class="comment-header_img"
+        >
+        <textarea class="comment-text" name="" id="" cols="120" rows="8" placeholder="Add a comment..."></textarea>
+        <button class="send_btn">
+            Send
+        </button>
+    </div>
+}

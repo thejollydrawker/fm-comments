@@ -2,8 +2,7 @@
 
 $btn-font-weight: 500;
 
-.comment {
-
+@mixin container {
     box-shadow: 7px 5px 5px lightgray;
     padding: 1rem;
     border-radius: 10px;
@@ -12,6 +11,10 @@ $btn-font-weight: 500;
     gap: 2rem;
     position: relative;
     background-color: white;
+}
+
+.comment {
+    @include container;
 
     &-content {
         font-size: 16px;
@@ -95,9 +98,6 @@ $btn-font-weight: 500;
 
 .reply-box {
     margin: 1rem 0;
-    // padding-left: 1.5rem;
-    //  background: none;
-    // border-left: solid app.$text-gray 2px;
     box-sizing: content-box;
 
     animation: slideInRight 300ms ease-in;
@@ -154,9 +154,6 @@ $btn-font-weight: 500;
             }
         }
     }
-}
-*[class*="_btn"] {
-    cursor: pointer;
 }
 
 article.comment {

@@ -18,6 +18,10 @@ $breakpoint-tablet: 768px;
     padding: 0.5rem;
 }
 
+*[class*="_btn"] {
+    cursor: pointer;
+}
+
 @media (min-width: $breakpoint-tablet) {
     .app-main {
         padding: 5rem;
