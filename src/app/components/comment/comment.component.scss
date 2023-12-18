@@ -13,28 +13,65 @@ $btn-font-weight: 500;
     background-color: white;
 }
 
+@mixin btn-default {
+    border: none;
+    background: none;
+    font-size: 16px;
+}
+
 .comment {
     @include container;
 
     &-content {
         font-size: 16px;
         color: gray;
+        width: 100%;
+    }
+
+    &-body {
+        padding-bottom: 4.5rem;
+        position: relative;
+
+        .update_btn {
+            position: absolute;
+            right: 0%;
+            bottom: 5%;
+        }
     }
 
     &-reply {
         position: absolute;
         bottom: 10%;
         right: 5%;
+        display: flex;
+        gap: 0.75rem;
+        height: fit-content;
 
         &_btn {
-            border: none;
-            background: none;
+            @include btn-default;
             color: app.$accent-blue;
-            font-size: 16px;
             font-weight: $btn-font-weight;
 
             &:hover, & svg:hover{
                 color: app.$accent-blue-hover;
+            }
+        }
+
+        & .comment-edit_btn {
+            @include btn-default;
+            color: app.$accent-blue;
+
+            &:hover {
+                color: app.$accent-blue-hover;
+            }
+        } 
+        
+        & .comment-delete_btn {
+            @include btn-default;
+            color: app.$delete-red;
+
+            &:hover {
+                color: app.$delete-red-hover;
             }
         }
     }
@@ -53,8 +90,7 @@ $btn-font-weight: 500;
         padding: 8px;
 
         &_btn {
-            border: none;
-            background: none;
+            @include btn-default;
             color: gray;
             font-weight: $btn-font-weight;
             font-size: 16px;
@@ -86,6 +122,12 @@ $btn-font-weight: 500;
             color: gray;
             font-size: 16px;
         }
+
+        &_you-tag {
+            background-color: app.$accent-blue;
+            color: white;
+            padding: 0.25rem;
+        }
     }
 
     &-text {
@@ -93,29 +135,29 @@ $btn-font-weight: 500;
         border-color: app.$dark-slate;
         color: gray;
         font-size: 16px;
+        width: 100%;
     }
 }
 
 .reply-box {
     margin: 1rem 0;
     box-sizing: content-box;
-
     animation: slideInRight 300ms ease-in;
+}
 
-    & .reply_btn {
-        background-color: app.$accent-blue;
-        height: fit-content;
-        padding: 1rem 1.75rem;
-        border: none;
-        border-radius: 6px;
-        color: white;
-        text-transform: uppercase;
-        font-weight: 700;
-        font-size: 16px;
+.accent-btn {
+    @include btn-default;
+    background-color: app.$accent-blue;
+    height: fit-content;
+    padding: 1rem 1.75rem;
+    border-radius: 6px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 16px;
 
-        &:hover {
-            background-color: app.$accent-blue-hover;
-        }
+    &:hover {
+        background-color: app.$accent-blue-hover;
     }
 }
 
@@ -148,6 +190,7 @@ $btn-font-weight: 500;
             display: flex;
             flex-direction: column;
             width: fit-content;
+            height: fit-content;
 
             &_btn {
                 padding: 12px;

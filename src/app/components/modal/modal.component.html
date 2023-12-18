@@ -1,0 +1,17 @@
+<div class="overlay"></div>
+<div class="modal">
+    <h2>
+        Delete comment
+    </h2>
+    <p>
+        Are you sure yoy want to delete this comment? This will remove the comment and can't be undone.
+    </p>
+    <div class="buttons-container">
+        <button (click)="cancel.emit()" class="cancel">
+            No, cancel
+        </button>
+        <button (click)="apply.emit()" class="apply">
+            Yes, delete
+        </button>
+    </div>
+</div>
