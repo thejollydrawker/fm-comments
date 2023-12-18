@@ -18,4 +18,8 @@ export class CommentsService {
   getUser(): Observable<User> {
     return this.http.get<CommentResponse>('/assets/data/data.json').pipe(map(response => response.currentUser));
   }
+
+  postComment(content: string, user: User) {
+
+  }
 }

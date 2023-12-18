@@ -5,8 +5,8 @@
             [alt]="user.username"
             class="comment-header_img"
         >
-        <textarea class="comment-text" name="" id="" cols="120" rows="8" placeholder="Add a comment..."></textarea>
-        <button class="send_btn">
+        <textarea [(ngModel)]="content" class="comment-text" name="" id="" cols="120" rows="8" placeholder="Add a comment..."></textarea>
+        <button (click)="postComment()" class="send_btn">
             Send
         </button>
     </div>

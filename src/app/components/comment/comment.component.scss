@@ -19,6 +19,15 @@ $btn-font-weight: 500;
     font-size: 16px;
 }
 
+@mixin btn-primary {
+    height: fit-content;
+    padding: 1rem 1.75rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 16px;
+}
+
 .comment {
     @include container;
 
@@ -147,14 +156,9 @@ $btn-font-weight: 500;
 
 .accent-btn {
     @include btn-default;
+    @include btn-primary;
     background-color: app.$accent-blue;
-    height: fit-content;
-    padding: 1rem 1.75rem;
-    border-radius: 6px;
     color: white;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 16px;
 
     &:hover {
         background-color: app.$accent-blue-hover;

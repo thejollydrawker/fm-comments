@@ -16,6 +16,7 @@ export class CommentComponent {
 
   openReply: number = 0;
   editComment: number = 0;
+  commentToDelete?: number;
   openModal: boolean = false;
 
   currentUser$ = this.commentSrv.getUser();
@@ -30,5 +31,10 @@ export class CommentComponent {
     if (comment.score > 0) {
       comment.score -= 1;
     }
+  }
+
+  deleteComment(): void {
+    console.log(this.commentToDelete);
+    this.openModal = false;
   }
 }
