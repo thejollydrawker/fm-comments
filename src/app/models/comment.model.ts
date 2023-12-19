@@ -6,7 +6,8 @@ export interface Comment {
     createdAt: string,
     score: number,
     user: User,
-    replies: Comment[]
+    replies: Comment[],
+    replyingTo?: string;
 }
 
 export interface CommentResponse {
