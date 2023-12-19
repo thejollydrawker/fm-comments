@@ -20,6 +20,7 @@ export class CommentComponent {
   commentToDelete?: Comment;
   openModal: boolean = false;
   replyContent:string = '';
+  updateContent: string = '';
 
   currentUser$ = this.commentSrv.getUser();
 
@@ -57,8 +58,9 @@ export class CommentComponent {
 
   updateComment(comment: Comment): void {
     if(comment.content) {
-      this.commentSrv.update(comment, comment.content, this.comment);
+      this.commentSrv.update(comment, this.updateContent, this.comment);
       this.editComment = 0;
+      this.updateContent = '';
     }
   }
 }

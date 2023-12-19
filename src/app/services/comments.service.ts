@@ -17,10 +17,18 @@ export class CommentsService {
 
   constructor(private http: HttpClient) { }
 
+  saveToSession(comments: Comment[]): void {
+    sessionStorage.setItem('comments', JSON.stringify(comments));
+  }
+
+  getFromSession(): Comment[] {
+    return JSON.parse(sessionStorage.getItem('comments') || '[]');
+  }
+
   getComments(): Observable<Comment[]> {
-    if (this.comments.value.length == 0) {
-      this.http.get<CommentResponse>('/assets/data/data.json').pipe(map(response => response.comments), tap(value => this.comments.next(value))).subscribe();
-    }
+    if (this.getFromSession().length === 0) {
+      this.http.get<CommentResponse>('/assets/data/data.json').pipe(map(response => response.comments),tap(value => {this.saveToSession(value),this.comments.next(value)})).subscribe();
+    } else this.comments.next(this.getFromSession());
     return this.comments$;
   }
 
@@ -43,6 +51,7 @@ export class CommentsService {
     let commentsList = this.comments.value;
     commentsList.push(newComment);
     this.comments.next(commentsList);
+    this.saveToSession(commentsList);
   }
 
   deleteComment(comment: Comment, repliesTo?: Comment) {
@@ -54,6 +63,7 @@ export class CommentsService {
       commentsList.find(comm => comm.id === repliesTo.id)!.replies =commentsList.find(comm => comm.id === repliesTo.id)!.replies.filter(reply => reply.id !== comment.id)
     }
     this.comments.next(commentsList);
+    this.saveToSession(commentsList);
   }
 
   reply(content: string, repliesTo: Comment): void {
@@ -69,6 +79,7 @@ export class CommentsService {
     let commentsList = this.comments.value;
     commentsList.find(comm => comm.id === repliesTo.id)?.replies.push(newComment);
     this.comments.next(commentsList);
+    this.saveToSession(commentsList);
   }
 
   update(comment: Comment, text: string, repliesTo: Comment): void {
@@ -86,5 +97,7 @@ export class CommentsService {
         reply.content = text;
       } return reply; });
     }
+    this.comments.next(commentsList);
+    this.saveToSession(commentsList);
   }
 }
