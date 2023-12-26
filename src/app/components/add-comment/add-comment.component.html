@@ -1,13 +1,23 @@
 @if( user$ | async; as user ) {
-    <div class="comment">
+    <div class="comment reply-box ">
         <img 
             [src]="'assets/images/' + user.image.png" 
             [alt]="user.username"
             class="comment-header_img"
         >
-        <textarea [(ngModel)]="content" class="comment-text" name="" id="" cols="120" rows="8" placeholder="Add a comment..."></textarea>
-        <button (click)="postComment()" class="send_btn">
-            Send
-        </button>
+        <ng-container *ngIf="!isReply; else replyTemp">
+            <textarea [(ngModel)]="content" class="comment-text" name="" id="" cols="120" rows="8" placeholder="Add a comment..."></textarea>
+            <button (click)="postComment()" class="accent_btn">
+                Send
+            </button>
+        </ng-container>
     </div>
 }
+
+<ng-template #replyTemp>
+    <textarea [(ngModel)]="content" name="reply" class="comment-text" cols="120" rows="8"></textarea>
+    <button (click)="reply()" class="accent_btn">
+        Reply
+    </button>
+</ng-template>
+

@@ -1,30 +1,34 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Comment } from '../../models/comment.model';
 import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import { CommentsService } from '../../services/comments.service';
 import { ModalComponent } from '../modal/modal.component';
 import { FormsModule } from '@angular/forms';
+import { AddCommentComponent } from '../add-comment/add-comment.component';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [NgTemplateOutlet, AsyncPipe, NgIf, ModalComponent, FormsModule],
+  imports: [
+    NgTemplateOutlet,
+    AsyncPipe,
+    NgIf,
+    AddCommentComponent,
+    FormsModule],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss'
 })
 export class CommentComponent {
   @Input({ required: true }) comment!: Comment;
-
   openReply: number = 0;
   editComment: number = 0;
   commentToDelete?: Comment;
-  openModal: boolean = false;
-  replyContent:string = '';
   updateContent: string = '';
 
   currentUser$ = this.commentSrv.getUser();
 
-  constructor(private commentSrv: CommentsService){}
+  constructor(private commentSrv: CommentsService, private modalSrv: ModalService){}
 
   score(comment:Comment): void {
     comment.score += 1;
@@ -45,15 +49,6 @@ export class CommentComponent {
       }
   
     }
-    this.openModal = false;
-  }
-
-  reply(): void {
-    if (this.replyContent.length > 0) {
-      this.commentSrv.reply(this.replyContent, this.comment);
-      this.replyContent = '';
-      this.openReply = 0;
-    }
   }
 
   updateComment(comment: Comment): void {
@@ -62,5 +57,10 @@ export class CommentComponent {
       this.editComment = 0;
       this.updateContent = '';
     }
+  }
+
+  openModal(): void {
+    this.modalSrv.open = true;
+    this.modalSrv.action = () => this.deleteComment();
   }
 }

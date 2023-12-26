@@ -1,18 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../models/user.model';
-import { Observable } from 'rxjs';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { CommentsService } from '../../services/comments.service';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { Comment } from '../../models/comment.model';
 
 @Component({
   selector: 'app-add-comment',
   standalone: true,
-  imports: [ AsyncPipe, FormsModule ],
+  imports: [ AsyncPipe, FormsModule, NgIf ],
   templateUrl: './add-comment.component.html',
   styleUrl: './add-comment.component.scss'
 })
 export class AddCommentComponent implements OnInit {
+  @Input() comment?: Comment;
+  @Input() isReply: boolean = false;
+  @Output() replyEvent = new EventEmitter();
   user$ = this.commentSrv.getUser();
   currentUser?: User;
   content: string = '';
@@ -27,6 +30,14 @@ export class AddCommentComponent implements OnInit {
     if (this.content.length > 0 && this.currentUser) {
       this.commentSrv.postComment(this.content, this.currentUser);
       this.content = '';
+    }
+  }
+
+  reply(): void {
+    if (this.content.length > 0 && this.comment) {
+      this.commentSrv.reply(this.content, this.comment);
+      this.content = '';
+      this.replyEvent.emit();
     }
   }
 }

@@ -22,7 +22,13 @@ $btn-font-weight: 500;
     }
 }
 
-.send_btn {
+.reply-box {
+    margin: 1rem 0;
+    box-sizing: content-box;
+    animation: slideInRight 300ms ease-in;
+}
+
+.accent_btn {
     @include c.btn-default;
     @include c.btn-primary;
     background-color: app.$accent-blue;
@@ -49,7 +55,7 @@ $btn-font-weight: 500;
         }
     }
 
-    .send_btn {
+    .accent_btn {
         position: relative;
         bottom: 0;
         right: 0;

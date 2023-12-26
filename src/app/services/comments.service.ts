@@ -93,9 +93,12 @@ export class CommentsService {
         return comm;
       });
     } else {
-      commentsList.find(comm => comm.id === repliesTo.id)!.replies = commentsList.find(comm => comm.id === repliesTo.id)!.replies.map(reply => { if (reply.id === comment.id) {
-        reply.content = text;
-      } return reply; });
+      commentsList.find(comm => comm.id === repliesTo.id)!.replies = commentsList.find(comm => comm.id === repliesTo.id)!.replies.map(reply => {
+        if (reply.id === comment.id) {
+          reply.content = text;
+        } 
+        return reply; 
+      });
     }
     this.comments.next(commentsList);
     this.saveToSession(commentsList);

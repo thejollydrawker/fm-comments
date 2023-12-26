@@ -1,13 +1,26 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Signal, computed } from '@angular/core';
+import { ModalService } from '../../services/modal.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [],
+  imports: [NgIf],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
-  @Output() cancel = new EventEmitter();
-  @Output() apply = new EventEmitter();
+  isOpen: Signal<boolean> = computed(() => this.modalSrv.isOpen === true);
+
+  constructor(private modalSrv: ModalService) {
+  }
+
+  cancel(): void {
+    this.modalSrv.open = false;
+  }
+
+  apply(): void {
+    this.modalSrv.doAction();
+    this.modalSrv.open = false;
+  }
 }
