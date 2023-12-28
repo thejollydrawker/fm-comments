@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Signal } from '@angular/core';
 import { CommentsService } from '../../services/comments.service';
 import { Observable } from 'rxjs';
 import { Comment } from '../../models/comment.model';
@@ -14,11 +14,13 @@ import { CommentComponent } from '../comment/comment.component';
 })
 export class CommentsListComponent implements OnInit {
 
-  comments$?: Observable<Comment[]>;
+  //comments$?: Observable<Comment[]>;
+
+  comments: Signal<Comment[]> = this.commentsSrv.comments;
 
   constructor(private commentsSrv: CommentsService){}
 
   ngOnInit(): void {
-    this.comments$ = this.commentsSrv.getComments();
+    // this.comments$ = this.commentsSrv.getComments();
   }
 }

@@ -26,7 +26,8 @@ export class CommentComponent {
   commentToDelete?: Comment;
   updateContent: string = '';
 
-  currentUser$ = this.commentSrv.getUser();
+  //currentUser$ = this.commentSrv.getUser();
+  currentUser = this.commentSrv.user;
 
   constructor(private commentSrv: CommentsService, private modalSrv: ModalService){}
 
@@ -42,18 +43,19 @@ export class CommentComponent {
 
   deleteComment(): void {
     if (this.commentToDelete) {
-      if (this.commentToDelete.replyingTo) {
-        this.commentSrv.deleteComment(this.commentToDelete, this.comment);
-      } else {
-        this.commentSrv.deleteComment(this.commentToDelete);
-      }
-  
+      // if (this.commentToDelete.replyingTo) {
+      //   this.commentSrv.deleteComment(this.commentToDelete, this.comment);
+      // } else {
+      //   this.commentSrv.deleteComment(this.commentToDelete);
+      // }
+      this.commentSrv.remove$.next({comment: this.commentToDelete, repliesTo: this.comment});
     }
   }
 
   updateComment(comment: Comment): void {
     if(comment.content) {
-      this.commentSrv.update(comment, this.updateContent, this.comment);
+      // this.commentSrv.update(comment, this.updateContent, this.comment);
+      this.commentSrv.edit$.next({comment, text: this.updateContent, repliesTo: this.comment});
       this.editComment = 0;
       this.updateContent = '';
     }

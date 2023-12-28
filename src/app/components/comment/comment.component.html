@@ -21,7 +21,8 @@
                 <h2>
                     {{ commentItem.user.username }}
                 </h2>
-                <span class="comment-header_you-tag" *ngIf="commentItem.user.username === (currentUser$ | async)?.username">
+                <!-- <span class="comment-header_you-tag" *ngIf="commentItem.user.username === (currentUser$ | async)?.username"> -->
+                <span class="comment-header_you-tag" *ngIf="commentItem.user.username === currentUser()?.username">
                     You
                 </span>
                 <span class="comment-header_created-at">
@@ -32,7 +33,7 @@
             <div class="comment-body">
                 @if(editComment === commentItem.id) {
                     <textarea [(ngModel)]="updateContent" class="comment-text" rows="8">{{ comment.content }}</textarea>
-                    <button (click)="updateComment(commentItem)" class="accent-btn update_btn">
+                    <button (click)="updateComment(commentItem)" class="accent_btn update_btn">
                         Update
                     </button>
                 } @else {
@@ -49,7 +50,8 @@
             <button (click)="unscore(commentItem)" class="comment-score_btn"><svg width="11" height="3" xmlns="http://www.w3.org/2000/svg"><path d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" fill="#C5C6EF"/></svg></button>
         </div>
 
-        @if((currentUser$ | async)?.username !== commentItem.user.username) {
+        <!-- @if((currentUser$ | async)?.username !== commentItem.user.username) { -->
+        @if(currentUser()?.username !== commentItem.user.username) {
            <div class="comment-reply">
                 <button (click)="openReply = commentItem.id" class="comment-reply_btn">
                     <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="currentColor"/></svg>

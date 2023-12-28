@@ -1,8 +1,9 @@
-@if( user$ | async; as user ) {
+<!-- @if( user$ | async; as user ) { -->
+@if( user()) {
     <div class="comment reply-box ">
         <img 
-            [src]="'assets/images/' + user.image.png" 
-            [alt]="user.username"
+            [src]="'assets/images/' + user()!.image.png" 
+            [alt]="user()!.username"
             class="comment-header_img"
         >
         <ng-container *ngIf="!isReply; else replyTemp">
