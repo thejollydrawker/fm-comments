@@ -129,7 +129,7 @@ export class CommentsService {
       return {
         id: Date.now(),
         content: content,
-        createdAt: 'Now',
+        createdAt: this.getToday(),
         score: 0,
         user: this.user()!,
         replies: []
@@ -150,7 +150,7 @@ export class CommentsService {
     let newComment: Comment = {
       id: Date.now(),
       content: content,
-      createdAt: 'Now',
+      createdAt: '12/10/2023',
       score: 0,
       replyingTo: repliesTo.user.username,
       user: this.user()!,
@@ -210,5 +210,10 @@ export class CommentsService {
       comm.scoredBy ? comm.scoredBy.push(this.user()!): comm.scoredBy = [this.user()!];
     }
     return comm;
+  }
+
+  getToday(): string {
+    const today = new Date();
+    return `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`;
   }
 }

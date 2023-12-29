@@ -5,6 +5,7 @@ import { CommentsService } from '../../services/comments/comments.service';
 import { FormsModule } from '@angular/forms';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
 import { ModalService } from '../../services/modal/modal.service';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
 
 @Component({
   selector: 'app-comment',
@@ -15,7 +16,9 @@ import { ModalService } from '../../services/modal/modal.service';
     NgIf,
     NgClass,
     AddCommentComponent,
-    FormsModule],
+    FormsModule,
+    FormatDatePipe
+  ],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss'
 })
