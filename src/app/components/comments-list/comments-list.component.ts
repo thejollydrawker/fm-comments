@@ -12,15 +12,8 @@ import { CommentComponent } from '../comment/comment.component';
   templateUrl: './comments-list.component.html',
   styleUrl: './comments-list.component.scss'
 })
-export class CommentsListComponent implements OnInit {
-
-  //comments$?: Observable<Comment[]>;
-
+export class CommentsListComponent {
   comments: Signal<Comment[]> = this.commentsSrv.comments;
 
   constructor(private commentsSrv: CommentsService){}
-
-  ngOnInit(): void {
-    // this.comments$ = this.commentsSrv.getComments();
-  }
 }
