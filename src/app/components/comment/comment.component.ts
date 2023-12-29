@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Comment } from '../../models/comment.model';
 import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
-import { CommentsService } from '../../services/comments.service';
+import { CommentsService } from '../../services/comments/comments.service';
 import { ModalComponent } from '../modal/modal.component';
 import { FormsModule } from '@angular/forms';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
-import { ModalService } from '../../services/modal.service';
+import { ModalService } from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-comment',
@@ -23,7 +23,6 @@ export class CommentComponent {
   @Input({ required: true }) comment!: Comment;
   openReply: number = 0;
   editComment: number = 0;
-  commentToDelete?: Comment;
   updateContent: string = '';
 
   //currentUser$ = this.commentSrv.getUser();
@@ -41,15 +40,13 @@ export class CommentComponent {
     }
   }
 
-  deleteComment(): void {
-    if (this.commentToDelete) {
+  deleteComment(remove: Comment): void {
       // if (this.commentToDelete.replyingTo) {
       //   this.commentSrv.deleteComment(this.commentToDelete, this.comment);
       // } else {
       //   this.commentSrv.deleteComment(this.commentToDelete);
       // }
-      this.commentSrv.remove$.next({comment: this.commentToDelete, repliesTo: this.comment});
-    }
+      this.commentSrv.remove$.next({comment: remove, repliesTo: this.comment});
   }
 
   updateComment(comment: Comment): void {
@@ -61,8 +58,8 @@ export class CommentComponent {
     }
   }
 
-  openModal(): void {
+  openModal(comm: Comment): void {
     this.modalSrv.open = true;
-    this.modalSrv.action = () => this.deleteComment();
+    this.modalSrv.action = () => this.deleteComment(comm);
   }
 }

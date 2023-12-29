@@ -1,35 +1,8 @@
 @use 'src/app/app.component' as app;
-
-$btn-font-weight: 500;
-
-@mixin container {
-    box-shadow: 7px 5px 5px lightgray;
-    padding: 1rem;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    position: relative;
-    background-color: white;
-}
-
-@mixin btn-default {
-    border: none;
-    background: none;
-    font-size: 16px;
-}
-
-@mixin btn-primary {
-    height: fit-content;
-    padding: 1rem 1.75rem;
-    border-radius: 6px;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 16px;
-}
+@use 'src/app/mixins/mixins' as mixins;
 
 .comment {
-    @include container;
+    @include mixins.container;
 
     &-content {
         font-size: 16px;
@@ -42,6 +15,9 @@ $btn-font-weight: 500;
         position: relative;
 
         .update_btn {
+            @include mixins.btn-default;
+            @include mixins.btn-primary;
+            @include mixins.btn-accent;
             position: absolute;
             right: 0%;
             bottom: 5%;
@@ -65,9 +41,9 @@ $btn-font-weight: 500;
         height: fit-content;
 
         &_btn {
-            @include btn-default;
+            @include mixins.btn-default;
             color: app.$accent-blue;
-            font-weight: $btn-font-weight;
+            font-weight: app.$btn-font-weight;
 
             &:hover, & svg:hover{
                 color: app.$accent-blue-hover;
@@ -75,7 +51,7 @@ $btn-font-weight: 500;
         }
 
         & .comment-edit_btn {
-            @include btn-default;
+            @include mixins.btn-default;
             color: app.$accent-blue;
 
             &:hover {
@@ -84,7 +60,7 @@ $btn-font-weight: 500;
         } 
         
         & .comment-delete_btn {
-            @include btn-default;
+            @include mixins.btn-default;
             color: app.$delete-red;
 
             &:hover {
@@ -107,9 +83,9 @@ $btn-font-weight: 500;
         padding: 8px;
 
         &_btn {
-            @include btn-default;
+            @include mixins.btn-default;
             color: gray;
-            font-weight: $btn-font-weight;
+            font-weight: app.$btn-font-weight;
             font-size: 16px;
             padding: 5px 12px;
             padding-left: 12px;
@@ -145,20 +121,6 @@ $btn-font-weight: 500;
             color: white;
             padding: 0.25rem;
         }
-    }
-}
-
-.accent_btn {
-    @include btn-default;
-    @include btn-primary;
-    background-color: app.$accent-blue;
-    color: white;
-    position: absolute;
-    bottom: 10%;
-    right:5%;
-
-    &:hover {
-        background-color: app.$accent-blue-hover;
     }
 }
 

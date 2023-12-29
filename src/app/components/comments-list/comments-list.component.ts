@@ -1,5 +1,5 @@
 import { Component, OnInit, Signal } from '@angular/core';
-import { CommentsService } from '../../services/comments.service';
+import { CommentsService } from '../../services/comments/comments.service';
 import { Observable } from 'rxjs';
 import { Comment } from '../../models/comment.model';
 import { CommonModule } from '@angular/common';

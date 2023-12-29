@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, signal } from '@angular/core';
-import { Comment, CommentResponse } from '../models/comment.model';
+import { Comment, CommentResponse } from '../../models/comment.model';
 import { BehaviorSubject, Observable, ReplaySubject, Subject, from, map, of, tap } from 'rxjs';
-import { User } from '../models/user.model';
+import { User } from '../../models/user.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommentsState, EditCommentAction, RemoveCommentAction, ReplyCommentAction } from '../models/state.model';
+import { CommentsState, EditCommentAction, RemoveCommentAction, ReplyCommentAction } from '../../models/state.model';
 
 
 @Injectable({

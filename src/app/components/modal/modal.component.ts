@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, Signal, computed } from '@angular/core';
-import { ModalService } from '../../services/modal.service';
+import { ModalService } from '../../services/modal/modal.service';
 import { NgIf } from '@angular/common';
 
 @Component({

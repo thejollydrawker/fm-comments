@@ -1,10 +1,8 @@
 @use 'src/app/app.component' as app;
-@use 'src/app/components/comment/comment.component' as c;
-
-$btn-font-weight: 500;
+@use 'src/app/mixins/mixins' as mixins;
 
 .comment {
-    @include c.container;
+    @include mixins.container;
 
     &-header {
         &_img {
@@ -28,18 +26,13 @@ $btn-font-weight: 500;
     animation: slideInRight 300ms ease-in;
 }
 
-.accent_btn {
-    @include c.btn-default;
-    @include c.btn-primary;
-    background-color: app.$accent-blue;
-    color: white;
+.send_btn {
+    @include mixins.btn-default;
+    @include mixins.btn-primary;
+    @include mixins.btn-accent;
     position: absolute;
     bottom: 10%;
     right:5%;
-
-    &:hover {
-        background-color: app.$accent-blue-hover;
-    }
 }
 
 @media (min-width: app.$breakpoint-tablet) {
@@ -55,7 +48,7 @@ $btn-font-weight: 500;
         }
     }
 
-    .accent_btn {
+    .send_btn {
         position: relative;
         bottom: 0;
         right: 0;

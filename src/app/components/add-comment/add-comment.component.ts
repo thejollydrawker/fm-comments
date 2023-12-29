@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../models/user.model';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { CommentsService } from '../../services/comments.service';
+import { CommentsService } from '../../services/comments/comments.service';
 import { FormsModule } from '@angular/forms';
 import { Comment } from '../../models/comment.model';
 
