@@ -21,3 +21,8 @@ export interface RemoveCommentAction {
     comment: Comment;
     repliesTo: Comment;
 }
+
+export interface ScoreCommentAction {
+    comment: Comment;
+    upvote: boolean;
+}

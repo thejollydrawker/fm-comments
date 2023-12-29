@@ -90,6 +90,26 @@
             padding: 5px 12px;
             padding-left: 12px;
             padding-right: 12px;
+
+            & svg {
+                transition: ease-in-out 100ms;
+
+                &:hover {
+                    transform: scale(1.5);
+                }
+            }
+
+            &[disabled] {
+                color: lightgray;
+                
+                & svg {
+                    transition: none;
+
+                    &:hover {
+                        transform: none;
+                    }
+                }
+            }
         }
 
         & span {

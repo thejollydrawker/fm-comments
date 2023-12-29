@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Comment } from '../../models/comment.model';
-import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import { CommentsService } from '../../services/comments/comments.service';
-import { ModalComponent } from '../modal/modal.component';
 import { FormsModule } from '@angular/forms';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
 import { ModalService } from '../../services/modal/modal.service';
@@ -14,6 +13,7 @@ import { ModalService } from '../../services/modal/modal.service';
     NgTemplateOutlet,
     AsyncPipe,
     NgIf,
+    NgClass,
     AddCommentComponent,
     FormsModule],
   templateUrl: './comment.component.html',
@@ -31,13 +31,11 @@ export class CommentComponent {
   constructor(private commentSrv: CommentsService, private modalSrv: ModalService){}
 
   score(comment:Comment): void {
-    comment.score += 1;
+    this.commentSrv.score$.next({ comment, upvote: true });
   }
 
   unscore(comment: Comment) {
-    if (comment.score > 0) {
-      comment.score -= 1;
-    }
+    this.commentSrv.score$.next({ comment, upvote: false });
   }
 
   deleteComment(remove: Comment): void {
@@ -61,5 +59,9 @@ export class CommentComponent {
   openModal(comm: Comment): void {
     this.modalSrv.open = true;
     this.modalSrv.action = () => this.deleteComment(comm);
+  }
+
+  scoredByUser(comment: Comment): boolean {
+    return comment.scoredBy?.find(user => user.username === this.currentUser()?.username) !== undefined;
   }
 }

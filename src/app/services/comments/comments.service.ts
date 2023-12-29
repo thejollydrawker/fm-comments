@@ -4,7 +4,7 @@ import { Comment, CommentResponse } from '../../models/comment.model';
 import { BehaviorSubject, Observable, ReplaySubject, Subject, from, map, of, tap } from 'rxjs';
 import { User } from '../../models/user.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommentsState, EditCommentAction, RemoveCommentAction, ReplyCommentAction } from '../../models/state.model';
+import { CommentsState, EditCommentAction, RemoveCommentAction, ReplyCommentAction, ScoreCommentAction } from '../../models/state.model';
 
 
 @Injectable({
@@ -24,6 +24,7 @@ export class CommentsService {
   reply$ = new Subject<ReplyCommentAction>();
   edit$ = new Subject<EditCommentAction>();
   remove$ = new Subject<RemoveCommentAction>();
+  score$ = new Subject<ScoreCommentAction>();
 
   private state = signal<CommentsState>({
     comments: [],
@@ -93,6 +94,17 @@ export class CommentsService {
         let newState = {
           ...state,
           comments: this.deleteComment(removeComment.comment, removeComment.repliesTo)
+        }
+        this.saveToSession(newState.comments);
+        return newState;
+      })
+    });
+
+    this.score$.pipe(takeUntilDestroyed()).subscribe(score => {
+      this.state.update(state => {
+        let newState = {
+          ...state,
+          comments: this.addScore(score)
         }
         this.saveToSession(newState.comments);
         return newState;
@@ -256,5 +268,32 @@ export class CommentsService {
     return commentsList;
   }
 
+  addScore(score: ScoreCommentAction): Comment[] {
+    return [...this.comments()].map(comm => {
+      if(comm.id === score.comment.id) {
+         comm = this.score(comm, score);
+      } else if (comm.replies.find(reply => reply.id === score.comment.id)) {
+        comm.replies.map(reply => {
+          if (reply.id === score.comment.id) {
+            reply = this.score(reply, score);
+          }
+          return reply;
+        })
+      }
+      return comm;
+    });
+  }
 
+  score(comm: Comment, action: ScoreCommentAction): Comment {
+    if(!comm.scoredBy?.find(user => user.username === this.user()?.username) && comm.user.username !== this.user()?.username) {
+      if (action.upvote) {
+        comm.score += 1
+      } else if(comm.score > 0) {
+        comm.score -= 1
+      }
+
+      comm.scoredBy ? comm.scoredBy.push(this.user()!): comm.scoredBy = [this.user()!];
+    }
+    return comm;
+  }
 }

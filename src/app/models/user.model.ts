@@ -1,9 +1,9 @@
 export interface User {
-    image: ProfilePic,
-    username: string,
+    image: ProfilePic;
+    username: string;
 }
 
 export interface ProfilePic {
-    png: string,
-    webp: string,
+    png: string;
+    webp: string;
 }
