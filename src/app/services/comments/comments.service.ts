@@ -30,7 +30,18 @@ export class CommentsService {
   comments = computed(() => this.state().comments);
 
   constructor(private http: HttpClient) {
+    this.initReducers();
+  }
 
+  saveToSession(comments: Comment[]): void {
+    sessionStorage.setItem('comments', JSON.stringify(comments));
+  }
+
+  getFromSession(): Comment[] {
+    return JSON.parse(sessionStorage.getItem('comments') || '[]');
+  }
+
+  initReducers(): void {
     //reducers
     this.commentsSrc$.pipe(takeUntilDestroyed(), tap(value => this.saveToSession(value))).subscribe(commentsList => {
       this.state.update((state) => {
@@ -104,20 +115,12 @@ export class CommentsService {
         return newState;
       })
     });
-
-  }
-
-  saveToSession(comments: Comment[]): void {
-    sessionStorage.setItem('comments', JSON.stringify(comments));
-  }
-
-  getFromSession(): Comment[] {
-    return JSON.parse(sessionStorage.getItem('comments') || '[]');
   }
 
   getComments(): Observable<Comment[]> {
       if (this.getFromSession().length === 0) {
-        return this.http.get<CommentResponse>('/assets/data/data.json').pipe(map(response => response.comments),tap(value => {this.saveToSession(value)}));
+        return this.http.get<CommentResponse>('/assets/data/data.json')
+                .pipe(map(response => response.comments ),tap( value => { this.saveToSession(value) }));
       } else return of<Comment[]>(this.getFromSession());
     }
 
@@ -134,16 +137,16 @@ export class CommentsService {
         user: this.user()!,
         replies: []
       };
-    }
+  }
 
   deleteComment(comment: Comment, repliesTo?: Comment): Comment[] {
-    let commentsList = this.comments();
+    let commentsList = [...this.comments()];
 
     repliesTo?.id === comment.id 
     ? commentsList = commentsList.filter(comm => comm.id !== comment.id)
-    : commentsList.find(comm => comm.id === repliesTo?.id)!.replies =commentsList.find(comm => comm.id === repliesTo?.id)!.replies.filter(reply => reply.id !== comment.id)
+    : commentsList.find(comm => comm.id === repliesTo?.id)!.replies = commentsList.find(comm => comm.id === repliesTo?.id)!.replies.filter(reply => reply.id !== comment.id)
     
-    return [...commentsList];
+    return commentsList;
   }
 
   reply(content: string, repliesTo: Comment): Comment[] {
@@ -156,9 +159,9 @@ export class CommentsService {
       user: this.user()!,
       replies: []
     };
-    let commentsList = this.comments();
+    let commentsList = [...this.comments()];
     commentsList.find(comm => comm.id === repliesTo.id)?.replies.push(newComment);
-    return [...commentsList];
+    return commentsList;
   }
 
   update(comment: Comment, text: string, repliesTo: Comment): Comment[] {
@@ -202,11 +205,10 @@ export class CommentsService {
   score(comm: Comment, action: ScoreCommentAction): Comment {
     if(!comm.scoredBy?.find(user => user.username === this.user()?.username) && comm.user.username !== this.user()?.username) {
       if (action.upvote) {
-        comm.score += 1
+        comm.score += 1;
       } else if(comm.score > 0) {
-        comm.score -= 1
+        comm.score -= 1;
       }
-
       comm.scoredBy ? comm.scoredBy.push(this.user()!): comm.scoredBy = [this.user()!];
     }
     return comm;
