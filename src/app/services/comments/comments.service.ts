@@ -150,7 +150,7 @@ export class CommentsService {
     let newComment: Comment = {
       id: Date.now(),
       content: content,
-      createdAt: '12/10/2023',
+      createdAt: this.getToday(),
       score: 0,
       replyingTo: repliesTo.user.username,
       user: this.user()!,

@@ -12,7 +12,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 export class FormatDatePipe implements PipeTransform {
     transform(value: string) {
 
-        var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+        var date_regex = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
         if (!(date_regex.test(value))) {
             return value;
         }
