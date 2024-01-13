@@ -142,10 +142,25 @@ export class CommentsService {
   deleteComment(comment: Comment, repliesTo?: Comment): Comment[] {
     let commentsList = [...this.comments()];
 
-    repliesTo?.id === comment.id 
-    ? commentsList = commentsList.filter(comm => comm.id !== comment.id)
-    : commentsList.find(comm => comm.id === repliesTo?.id)!.replies = commentsList.find(comm => comm.id === repliesTo?.id)!.replies.filter(reply => reply.id !== comment.id)
-    
+    if ( repliesTo?.id === comment.id ) {
+      const indx = commentsList.findIndex(c => c.id == comment.id)
+
+      if (indx !== -1) {
+        commentsList.splice(indx, 1)
+      }
+      
+    } else {
+      const mainComment = commentsList.find(comm => comm.id === repliesTo?.id)
+
+      if (mainComment) {
+        const indx = mainComment.replies.findIndex(reply => reply.id === comment.id)
+
+        if (indx !== -1) {
+            mainComment.replies.splice(indx, 1)
+        }
+      }
+    }
+
     return commentsList;
   }
 
@@ -165,22 +180,30 @@ export class CommentsService {
   }
 
   update(comment: Comment, text: string, repliesTo: Comment): Comment[] {
-    let commentsList = this.comments();
+    let commentsList = [...this.comments()];
     
     if (repliesTo.id === comment.id) {
-      [...commentsList].map(comm => {
-        if (comm.id === comment.id) {
-          comm.content = text;
+      const indx = commentsList.findIndex(c => c.id == comment.id)
+
+        if (indx !== -1) {
+            commentsList[indx] = {
+              ...commentsList[indx],
+              content: text
+          }
         }
-        return comm;
-      });
-    } else {
-      [...commentsList].find(comm => comm.id === repliesTo.id)!.replies = commentsList.find(comm => comm.id === repliesTo.id)!.replies.map(reply => {
-        if (reply.id === comment.id) {
-          reply.content = text;
-        } 
-        return reply; 
-      });
+    } else { 
+      const mainComment = commentsList.find(comm => comm.id === repliesTo.id)
+
+      if (mainComment) {
+        const indx = mainComment.replies.findIndex(reply => reply.id === comment.id)
+
+        if (indx !== -1) {
+            mainComment.replies[indx] = {
+              ...mainComment.replies[indx],
+              content: text
+          }
+        }
+      }
     }
 
     return commentsList;

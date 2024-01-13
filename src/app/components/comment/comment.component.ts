@@ -52,8 +52,15 @@ export class CommentComponent {
   }
 
   openModal(comm: Comment): void {
-    this.modalSrv.open = true;
-    this.modalSrv.action = () => this.deleteComment(comm);
+    this.modalSrv.open({
+      title: 'Delete comment',
+      body: 'Are you sure yoy want to delete this comment? This will remove the comment and can\'t be undone.',
+      showButtons: true,
+      applyAction: () => { this.deleteComment(comm); this.modalSrv.close()},
+      cancelAction: () => this.modalSrv.close(),
+      cancelBtnText: 'No, cancel',
+      applyBtnText: 'Yes, delete'
+    });
   }
 
   scoredByUser(comment: Comment): boolean {

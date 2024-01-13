@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output, Signal, computed } from '@angular/core';
-import { ModalService } from '../../services/modal/modal.service';
+import { Component, EventEmitter, Input, Output, Signal, computed } from '@angular/core';
+import { ModalContent, ModalService } from '../../services/modal/modal.service';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -10,17 +10,18 @@ import { NgIf } from '@angular/common';
   styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
-  isOpen: Signal<boolean> = computed(() => this.modalSrv.isOpen === true);
+  isOpen: Signal<boolean> = this.modalSrv.isOpen;
+  modal: Signal<ModalContent> = this.modalSrv.modal;
 
   constructor(private modalSrv: ModalService) {
   }
 
   cancel(): void {
-    this.modalSrv.open = false;
+    this.modalSrv.close();
   }
 
   apply(): void {
-    this.modalSrv.doAction();
-    this.modalSrv.open = false;
+    this.modal().applyAction();
+    this.modalSrv.close();
   }
 }

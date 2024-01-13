@@ -2,19 +2,23 @@
     <div class="overlay"></div>
     <div class="modal">
         <h2>
-            Delete comment
+            {{ modal().title }}
         </h2>
         <p>
-            Are you sure yoy want to delete this comment? This will remove the comment and can't be undone.
+            {{ modal().body }}
         </p>
-        <div class="buttons-container">
-            <button (click)="cancel()" class="cancel">
-                No, cancel
-            </button>
-            <button (click)="apply()" class="apply">
-                Yes, delete
-            </button>
-        </div>
+
+        @if(modal().showButtons) {
+           <div class="buttons-container">
+                <button (click)="this.modal().cancelAction()" class="cancel">
+                    {{ modal().cancelBtnText }}
+                </button>
+                <button (click)="this.modal().applyAction()" class="apply">
+                    {{ modal().applyBtnText }}
+                </button>
+            </div> 
+        }
+        
     </div>  
 </ng-container>
 
