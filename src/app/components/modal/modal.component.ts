@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output, Signal, computed } from '@angular/core';
-import { ModalContent, ModalService } from '../../services/modal/modal.service';
+import { Component, Signal } from '@angular/core';
+import { ModalService } from '../../services/modal/modal.service';
 import { NgIf } from '@angular/common';
+import { ModalContent } from '../../models/modal.model';
 
 @Component({
   selector: 'app-modal',
@@ -22,6 +23,10 @@ export class ModalComponent {
 
   apply(): void {
     this.modal().applyAction();
+    this.modalSrv.close();
+  }
+
+  close(): void {
     this.modalSrv.close();
   }
 }

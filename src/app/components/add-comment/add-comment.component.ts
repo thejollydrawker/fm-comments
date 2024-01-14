@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { User } from '../../models/user.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { CommentsService } from '../../services/comments/comments.service';
 import { FormsModule } from '@angular/forms';

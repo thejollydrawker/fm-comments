@@ -1,14 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
-
-export interface ModalContent {
-  title: string;
-  body: string;
-  showButtons: boolean;
-  cancelAction: () => void;
-  applyAction: () => void;
-  cancelBtnText: string;
-  applyBtnText: string;
-}
+import { ModalContent } from '../../models/modal.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +10,8 @@ export class ModalService {
     title: '',
     body: '',
     showButtons: true,
-    cancelAction: () => { return; },
-    applyAction: () => { return; },
+    cancelAction: () => undefined,
+    applyAction: () => undefined,
     cancelBtnText: '',
     applyBtnText: '',
   }
