@@ -33,7 +33,7 @@ export class CommentsService {
     this.initReducers();
   }
 
-  saveToSession(comments: Comment[]): void {
+  saveToSession({ comments }: CommentsState): void {
     sessionStorage.setItem('comments', JSON.stringify(comments));
   }
 
@@ -43,7 +43,7 @@ export class CommentsService {
 
   initReducers(): void {
     //reducers
-    this.commentsSrc$.pipe(takeUntilDestroyed(), tap(value => this.saveToSession(value))).subscribe(commentsList => {
+    this.commentsSrc$.pipe(takeUntilDestroyed(), tap(value => this.saveToSession({...this.state(), comments: value}))).subscribe(commentsList => {
       this.state.update((state) => {
         return {
           ...state,
@@ -62,65 +62,30 @@ export class CommentsService {
     });
 
     this.add$.pipe(takeUntilDestroyed()).subscribe(newComment => {
-      this.state.update(state => {
-        let newState = {
-          ...state,
-          comments: [...state.comments, this.add(newComment)]
-        }
-        this.saveToSession(newState.comments);
-        return newState;
-      })
+      this.state.update(state => this.handleAddEvent(state, newComment, this.saveToSession))
     });
 
     this.reply$.pipe(takeUntilDestroyed()).subscribe(reply => {
-      this.state.update(state => {
-        let newState = {
-          ...state,
-          comments: this.reply(reply.content, reply.repliesTo)
-        }
-        this.saveToSession(newState.comments);
-        return newState;
-      })
+      this.state.update(state => this.handleReplyEvent(state, reply, this.saveToSession))
     });
 
     this.edit$.pipe(takeUntilDestroyed()).subscribe(editComment => {
-      this.state.update(state => {
-        let newState = {
-          ...state,
-          comments: this.update(editComment.comment, editComment.text, editComment.repliesTo)
-        }
-        this.saveToSession(newState.comments);
-        return newState;
-      })
+      this.state.update(state => this.editEventHandler(state, editComment, this.saveToSession))
     });
 
     this.remove$.pipe(takeUntilDestroyed()).subscribe(removeComment => {
-      this.state.update(state => {
-        let newState = {
-          ...state,
-          comments: this.deleteComment(removeComment.comment, removeComment.repliesTo)
-        }
-        this.saveToSession(newState.comments);
-        return newState;
-      })
+      this.state.update(state => this.deleteEventHandler(state, removeComment, this.saveToSession))
     });
 
     this.score$.pipe(takeUntilDestroyed()).subscribe(score => {
-      this.state.update(state => {
-        let newState = {
-          ...state,
-          comments: this.addScore(score)
-        }
-        this.saveToSession(newState.comments);
-        return newState;
-      })
+      this.state.update(state => this.scoreEventHandler(state, score, this.saveToSession))
     });
   }
 
   getComments(): Observable<Comment[]> {
       if (this.getFromSession().length === 0) {
         return this.http.get<CommentResponse>('/assets/data/data.json')
-                .pipe(map(response => response.comments ),tap( value => { this.saveToSession(value) }));
+                .pipe(map(response => response.comments ),tap( value => { this.saveToSession({...this.state(), comments: value}) }));
       } else return of<Comment[]>(this.getFromSession());
     }
 
@@ -128,7 +93,7 @@ export class CommentsService {
     return this.http.get<CommentResponse>('/assets/data/data.json').pipe(map(response => response.currentUser));
   }
 
-  add(content: string): Comment {
+  newComment(content: string): Comment {
       return {
         id: Date.now(),
         content: content,
@@ -139,90 +104,118 @@ export class CommentsService {
       };
   }
 
-  deleteComment(comment: Comment, repliesTo?: Comment): Comment[] {
+  handleAddEvent(state: CommentsState, comment: string, callback: (state: CommentsState) => void): CommentsState {
+    const newComment = this.newComment(comment);
+    const newState = {
+      ...state,
+      comments: [...state.comments, newComment]
+    };
+    callback(newState);
+
+    return newState;
+  }
+
+  deleteEventHandler(state: CommentsState, action: RemoveCommentAction, callback: (state: CommentsState) => void): CommentsState {
     let commentsList = [...this.comments()];
 
-    if ( repliesTo?.id === comment.id ) {
-      const indx = commentsList.findIndex(c => c.id == comment.id)
+    if ( action.repliesTo?.id === action.comment.id ) {
+      const indx = commentsList.findIndex(comm => comm.id == action.comment.id);
 
-      if (indx !== -1) {
+      if (indx !== -1)
         commentsList.splice(indx, 1)
-      }
-      
     } else {
-      const mainComment = commentsList.find(comm => comm.id === repliesTo?.id)
+      const mainComment = commentsList.find(comm => comm.id === action.repliesTo?.id);
 
       if (mainComment) {
-        const indx = mainComment.replies.findIndex(reply => reply.id === comment.id)
+        const indx = mainComment.replies.findIndex(reply => reply.id === action.comment.id);
 
-        if (indx !== -1) {
-            mainComment.replies.splice(indx, 1)
-        }
+        if (indx !== -1)
+          mainComment.replies.splice(indx, 1);
       }
     }
 
-    return commentsList;
-  }
-
-  reply(content: string, repliesTo: Comment): Comment[] {
-    let newComment: Comment = {
-      id: Date.now(),
-      content: content,
-      createdAt: this.getToday(),
-      score: 0,
-      replyingTo: repliesTo.user.username,
-      user: this.user()!,
-      replies: []
+    const newState = {
+      ...state,
+      comments: commentsList
     };
-    let commentsList = [...this.comments()];
-    commentsList.find(comm => comm.id === repliesTo.id)?.replies.push(newComment);
-    return commentsList;
+
+    callback(newState);
+
+    return newState;
   }
 
-  update(comment: Comment, text: string, repliesTo: Comment): Comment[] {
+  handleReplyEvent(state: CommentsState, action: ReplyCommentAction, callback: ( state:CommentsState ) => void): CommentsState {
+    const newComment: Comment = this.newComment(action.content);
+    newComment.replyingTo = action.repliesTo.user.username;
+    const indx = state.comments.findIndex(comm => comm.id === action.repliesTo.id);
+
+    if (indx === -1) return { ...state };
+
+    const commentsList = [...state.comments];
+    commentsList[indx].replies.push(newComment);
+
+    const newState = {
+      ...state,
+      comments: commentsList
+    };
+
+    callback(newState);
+
+    return newState;
+  }
+
+  editEventHandler(state: CommentsState, action: EditCommentAction, callback: ( state:CommentsState ) => void): CommentsState {
     let commentsList = [...this.comments()];
     
-    if (repliesTo.id === comment.id) {
-      const indx = commentsList.findIndex(c => c.id == comment.id)
+    if (action.repliesTo.id === action.comment.id) {
+      const indx = commentsList.findIndex(comm => comm.id == action.comment.id)
 
-        if (indx !== -1) {
-            commentsList[indx] = {
-              ...commentsList[indx],
-              content: text
-          }
-        }
+      if (indx !== -1) 
+        commentsList[indx].content = action.text;  
     } else { 
-      const mainComment = commentsList.find(comm => comm.id === repliesTo.id)
+      const mainComment = commentsList.find(comm => comm.id === action.repliesTo.id)
 
       if (mainComment) {
-        const indx = mainComment.replies.findIndex(reply => reply.id === comment.id)
+        const indx = mainComment.replies.findIndex(reply => reply.id === action.comment.id)
 
-        if (indx !== -1) {
-            mainComment.replies[indx] = {
-              ...mainComment.replies[indx],
-              content: text
-          }
-        }
+        if (indx !== -1) 
+          mainComment.replies[indx].content = action.text;
       }
     }
 
-    return commentsList;
+    const newState = {
+      ...state,
+      comments: commentsList
+    };
+
+    callback(newState);
+
+    return newState;
   }
 
-  addScore(score: ScoreCommentAction): Comment[] {
-    return [...this.comments()].map(comm => {
-      if(comm.id === score.comment.id) {
-         comm = this.score(comm, score);
-      } else if (comm.replies.find(reply => reply.id === score.comment.id)) {
+  scoreEventHandler(state:CommentsState, action: ScoreCommentAction, callback: (state: CommentsState) => void): CommentsState {
+    const commentsList = [...this.comments()].map(comm => {
+      if(comm.id === action.comment.id) {
+         comm = this.score(comm, action);
+      } else if (comm.replies.find(reply => reply.id === action.comment.id)) {
         comm.replies.map(reply => {
-          if (reply.id === score.comment.id) {
-            reply = this.score(reply, score);
+          if (reply.id === action.comment.id) {
+            reply = this.score(reply, action);
           }
           return reply;
         })
       }
       return comm;
     });
+
+    const newState = {
+      ...state,
+      comments: commentsList
+    };
+
+    callback(newState);
+
+    return newState;
   }
 
   score(comm: Comment, action: ScoreCommentAction): Comment {
