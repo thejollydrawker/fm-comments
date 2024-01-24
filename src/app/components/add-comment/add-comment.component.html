@@ -6,7 +6,7 @@
             class="comment-header_img"
         >
         <ng-container *ngIf="!isReply; else replyTemp">
-            <textarea [(ngModel)]="content" class="comment-text" name="" id="" cols="120" rows="8" placeholder="Add a comment..."></textarea>
+            <textarea [(ngModel)]="content" spellcheck="true" class="comment-text" name="" id="" cols="120" rows="8" placeholder="Add a comment..."></textarea>
             <button (click)="postComment()" class="send_btn">
                 Send
             </button>
@@ -15,7 +15,7 @@
 }
 
 <ng-template #replyTemp>
-    <textarea [(ngModel)]="content" name="reply" class="comment-text" cols="120" rows="8"></textarea>
+    <textarea [(ngModel)]="content" spellcheck="true" name="reply" class="comment-text" cols="120" rows="8"></textarea>
     <button (click)="reply()" class="send_btn">
         Reply
     </button>

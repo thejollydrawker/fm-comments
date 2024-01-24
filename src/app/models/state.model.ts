@@ -15,6 +15,7 @@ export interface EditCommentAction {
 export interface ReplyCommentAction {
     content: string;
     repliesTo: Comment;
+    repliesToUser?: string;
 }
 
 export interface RemoveCommentAction {

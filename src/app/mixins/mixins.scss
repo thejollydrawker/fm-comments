@@ -2,7 +2,7 @@
 
 @mixin container {
     box-shadow: 7px 5px 5px lightgray;
-    padding: 1rem;
+    padding: 1.5rem;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -14,7 +14,7 @@
 @mixin btn-default {
     border: none;
     background: none;
-    font-size: 16px;
+    font-size: app.$font-size;
 }
 
 @mixin btn-primary {
@@ -22,8 +22,8 @@
     padding: 1rem 1.75rem;
     border-radius: 6px;
     text-transform: uppercase;
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: app.$font-bold;
+    font-size: app.$font-size;
 }
 
 @mixin btn-accent {

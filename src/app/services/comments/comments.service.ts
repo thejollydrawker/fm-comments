@@ -146,7 +146,7 @@ export class CommentsService {
 
   handleReplyEvent(state: CommentsState, action: ReplyCommentAction, callback: ( state:CommentsState ) => void): CommentsState {
     const newComment: Comment = this.newComment(action.content);
-    newComment.replyingTo = action.repliesTo.user.username;
+    newComment.replyingTo = action.repliesToUser;
     const indx = state.comments.findIndex(comm => comm.id === action.repliesTo.id);
 
     if (indx === -1) return { ...state };

@@ -13,10 +13,12 @@
     }
 
     &-text {
-        border-radius: 5px;
+        border-radius: 8px;
         border-color: app.$dark-slate;
         color: gray;
-        font-size: 16px;
+        font-size: app.$font-size;
+        padding: 1rem;
+        box-sizing: border-box;
     }
 }
 
@@ -53,5 +55,16 @@
         bottom: 0;
         right: 0;
         order: 3;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(20%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
     }
 }

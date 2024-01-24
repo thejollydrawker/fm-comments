@@ -1,15 +1,15 @@
 
-<ng-container *ngTemplateOutlet="commentContent; context: {comment: comment}"></ng-container>
+<ng-container *ngTemplateOutlet="commentContent; context: {comment: comment, isReply: false}"></ng-container>
 
 @if(comment.replies) {
     <section class="replies">
         @for (reply of comment.replies; track reply.id) {
-            <ng-container *ngTemplateOutlet="commentContent; context: {comment: reply}"></ng-container>
+            <ng-container *ngTemplateOutlet="commentContent; context: {comment: reply, isReply: true}"></ng-container>
         }
     </section> 
 }
 
-<ng-template #commentContent let-commentItem="comment">
+<ng-template #commentContent let-commentItem="comment" let-isReply="isReply">
     <article class="comment">
         <div class="comment-content">
             <div class="comment-header">
@@ -18,12 +18,13 @@
                     [alt]="comment.user.username"
                     class="comment-header_img"
                 >
-                <h2>
-                    {{ commentItem.user.username }}
+                <h2 class="comment-header_username">
+                    {{ commentItem.user.username }} 
+                    <span class="comment-header_you-tag" *ngIf="commentItem.user.username === currentUser()?.username">
+                        you
+                    </span>
                 </h2>
-                <span class="comment-header_you-tag" *ngIf="commentItem.user.username === currentUser()?.username">
-                    You
-                </span>
+               
                 <span class="comment-header_created-at">
                     {{ commentItem.createdAt | formatDate }}
                 </span>
@@ -31,12 +32,15 @@
         
             <div class="comment-body">
                 @if(editComment === commentItem.id) {
-                    <textarea [(ngModel)]="updateContent" class="comment-text" rows="8">{{ comment.content }}</textarea>
+                    <textarea [(ngModel)]="updateContent" spellcheck="true" class="comment-text" rows="8">{{ comment.content }}</textarea>
                     <button (click)="updateComment(commentItem)" class="update_btn">
                         Update
                     </button>
                 } @else {
-                  {{ commentItem.content }}  
+                    @if(isReply) {
+                        <span class="comment-body_mention-tag"> &#64;{{ commentItem.replyingTo }} </span>
+                    }
+                    {{ commentItem.content }}  
                 }
             </div>
         </div>
@@ -73,7 +77,7 @@
 
     @if(openReply === commentItem.id) {
         <form class="reply-box">
-            <app-add-comment [isReply]="true" [comment]="comment" (replyEvent)="openReply = 0"></app-add-comment>
+            <app-add-comment [isReply]="true" [comment]="comment" [repliesTo]="commentItem.user?.username" (replyEvent)="openReply = 0"></app-add-comment>
         </form>
     }
 </ng-template>
