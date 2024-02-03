@@ -84,13 +84,13 @@ export class CommentsService {
 
   getComments(): Observable<Comment[]> {
       if (this.getFromSession().length === 0) {
-        return this.http.get<CommentResponse>('/assets/data/data.json')
+        return this.http.get<CommentResponse>('assets/data/data.json')
                 .pipe(map(response => response.comments ),tap( value => { this.saveToSession({...this.state(), comments: value}) }));
       } else return of<Comment[]>(this.getFromSession());
     }
 
   getUser(): Observable<User> {
-    return this.http.get<CommentResponse>('/assets/data/data.json').pipe(map(response => response.currentUser));
+    return this.http.get<CommentResponse>('assets/data/data.json').pipe(map(response => response.currentUser));
   }
 
   newComment(content: string): Comment {
