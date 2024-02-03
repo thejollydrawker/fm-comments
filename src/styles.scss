@@ -1,6 +1,0 @@
-@use 'src/app/app.component' as app;
-
-body {
-    background-color: app.$bg-color-primary;
-    position: relative;
-}
