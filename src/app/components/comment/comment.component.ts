@@ -32,6 +32,17 @@ export class CommentComponent {
   constructor(private commentSrv: CommentsService, private modalSrv: ModalService){}
 
   score(comment:Comment): void {
+    if(comment.user.username === this.currentUser()?.username) {
+      this.modalSrv.open({
+        title: 'Error',
+        body: 'You can\'t score your own comment.',
+        showButtons: false,
+        applyAction: () => undefined,
+        cancelAction: () => undefined,
+        showClose: true
+      });
+      return;
+    }
     this.commentSrv.score$.next({ comment, upvote: true });
   }
 
@@ -59,7 +70,8 @@ export class CommentComponent {
       applyAction: () => { this.deleteComment(comm); this.modalSrv.close()},
       cancelAction: () => this.modalSrv.close(),
       cancelBtnText: 'No, cancel',
-      applyBtnText: 'Yes, delete'
+      applyBtnText: 'Yes, delete',
+      showClose: false
     });
   }
 

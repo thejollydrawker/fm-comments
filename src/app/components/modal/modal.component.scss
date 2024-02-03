@@ -21,10 +21,11 @@
 
         &-icon {
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 24px;
+            height: 24px;
             right: 0;
             top: 5%;
+            color: app.$dark-slate;
             cursor: pointer;
         }
     }

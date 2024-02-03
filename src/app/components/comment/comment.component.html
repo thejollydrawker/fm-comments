@@ -1,7 +1,7 @@
 
 <ng-container *ngTemplateOutlet="commentContent; context: {comment: comment, isReply: false}"></ng-container>
 
-@if(comment.replies) {
+@if(comment.replies.length > 0) {
     <section class="replies">
         @for (reply of comment.replies; track reply.id) {
             <ng-container *ngTemplateOutlet="commentContent; context: {comment: reply, isReply: true}"></ng-container>
