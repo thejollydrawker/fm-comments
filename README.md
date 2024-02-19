@@ -1,27 +1,60 @@
-# FmComments
+# Frontend Mentor - Interactive comments section solution
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
+This is a solution to the [Interactive comments section challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
 
-## Development server
+## Table of contents
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+  - [Useful resources](#useful-resources)
+- [Author](#author)
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Overview
 
-## Build
+### The challenge
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Users should be able to:
 
-## Running unit tests
+- View the optimal layout for the app depending on their device's screen size
+- See hover states for all interactive elements on the page
+- Create, Read, Update, and Delete comments and replies
+- Upvote and downvote comments
+- **Bonus**: If you're building a purely front-end project, use `localStorage` to save the current state in the browser that persists when the browser is refreshed.
+- **Bonus**: Instead of using the `createdAt` strings from the `data.json` file, try using timestamps and dynamically track the time since the comment or reply was posted.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Links
 
-## Running end-to-end tests
+- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Live Site URL: [https://thejollydrawker.github.io/fm-comments/]
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## My process
 
-## Further help
+### Built with
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- Angular 17
+- Typescript
+- Sass
+
+### What I learned
+
+Tried out using signals for state management, and new template expression syntax, just to stay up-to-dae with he new features and verisons of Angular.
+
+### Continued development
+
+Continue trying to implement signals, evaluating when to use observables vs signals. Also focus on what are good practices when it comes to signals.
+
+### Useful resources
+
+- https://angular.dev - Mostly the official documenation.
+- Stackoverflow
+
+## Author
+
+- Frontend Mentor - [@thejollydrawker](https://www.frontendmentor.io/profile/thejollydrawker)
+
